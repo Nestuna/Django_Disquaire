@@ -17,7 +17,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
+from store import views
+
 urlpatterns = [
+    path('', views.index), # '/' will call the method "index in "views.py"
+    path('store/', include('store.urls')),
     path('admin/', admin.site.urls),
 ]
 
