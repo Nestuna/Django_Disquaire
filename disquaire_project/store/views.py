@@ -13,3 +13,12 @@ def listing(request):
    message = """<ul>{}</ul>""".format("\n".join(albums))
    
    return HttpResponse(message)
+
+def details(request, album_id):
+   id = int(album_id)
+   album = ALBUMS[id]
+   artists =  album['artists']['name']
+
+   message = f"Le nom de l'album est {album['name']}. Il a été écrit par {artists}"
+   return HttpResponse(message)
+
