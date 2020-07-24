@@ -1,21 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.template import loader
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Album, Artist, Contact, Booking
 
 # Create your views here.
 def index(request):
-   albums = Album.objects.filter(available=True).order_by('-created_at')
-   formatted_albums = ['<li>{}</li>'.format(album.title) for album in albums]
-   # message = """
-   #    Les deux premiers albums : 
-   #    <ul>
-   #       {}
-   #    </ul>
-   # """.format("\n".join(formatted_albums))
+   albums_list = Album.objects.filter(available=True).order_by('-artists')
+   paginator = Paginator(albums_list, 3) # Pages de 3 items
+   page = request.GET.get('page') # on récupére la page de l'url
 
-   template = loader.get_template('store/index.html')
+   try:
+      albums = paginator.page(page)
+   except PageNotAnInteger:
+      albums = paginator.page(1)
+   except EmptyPage:
+      albums = paginator.page(paginator.num_pages)
+
    context = {
       'albums': albums
    }
