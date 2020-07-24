@@ -1,0 +1,7 @@
+<ul>
+   {% for album in albums%}
+      <a href = "{% url 'store:details' album_id=album.id %}">
+         <li>{% for artist in album.artists.all %} {{artist.name.capitalize}} {% endfor %} : {{ album }}</li>
+      </a>
+   {% endfor %}   
+</ul>
